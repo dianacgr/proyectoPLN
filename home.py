@@ -6,6 +6,8 @@ import shlex, subprocess
 from stanfordnlp import StanfordCoreNLP
 from nltk.parse import stanford
 from parseval import Modelo
+from nltk.tree import Tree
+from nltk.draw.tree import TreeView
 
 import sys
 reload(sys)  
@@ -47,18 +49,26 @@ def obtenerMedidas(arbolCreado, arbolReferencia):
 	medidas = model.parseval(arbolCreado, arbolReferencia, "-i")	
 	return medidas
 
+def generarArbol(arbol,analizador):
+	nombre = analizador+"tree"
+	t = Tree.fromstring(arbol)
+	TreeView(t)._cframe.print_to_file(nombre+".ps")
+	os.system("convert "+nombre+".ps "+nombre+".png")
+
 if __name__ == "__main__":
 	print "corenlp path"
 	corenlp_dir = "../stanford-corenlp-full-2015-04-20/"
 	print "load stanford"
 	coreStanfordNLP = StanfordCoreNLP(corenlp_dir) 
-	arbol = createStanfordTree("The thrift holding company said it expects to obtain regulatory approval and complete the transaction by year-end.")
+	arbol = createStanfordTree("PS of New Hampshire shares closed yesterday at $3.75, off 25 cents, in New York Stock Exchange composite trading.")
 	print arbol
-	arbol2 = createBikelTree("The thrift holding company said it expects to obtain regulatory approval and complete the transaction by year-end.")
+	arbol2 = createBikelTree("PS of New Hampshire shares closed yesterday at $3.75, off 25 cents, in New York Stock Exchange composite trading.")
 	print arbol2
-	arbolRef = "(S (NP-SBJ (DT The) (NN thrift) (VBG holding) (NN company) ) (VP (VBD said) (SBAR (-NONE- 0) (S (NP-SBJ-1 (PRP it) ) (VP (VBZ expects) (S (NP-SBJ (-NONE- *-1) ) (VP (TO to) (VP (VP (VB obtain) (NP (JJ regulatory) (NN approval) )) (CC and) (VP (VB complete) (NP (DT the) (NN transaction) ))(PP-TMP (IN by) (NP (NN year-end) ))))))))) (. .) )"
+	arbolRef = "( (S (NP-SBJ (NAC (NNP PS) (PP (IN of) (NP (NNP New) (NNP Hampshire) ))) (NNS shares) ) (VP (VBD closed) (NP-TMP (NN yesterday) ) (PP-CLR (IN at) (NP (NP ($ $) (CD 3.75) (-NONE- *U*) ) (, ,) (PP-DIR (IN off) (NP (CD 25) (NNS cents) )) (, ,) )) (PP-LOC (IN in) (NP (NNP New) (NNP York) (NNP Stock) (NNP Exchange) (JJ composite) (NN trading) )))(. .) ))"
 	print arbol
 	medidasStanford = obtenerMedidas(arbol, arbolRef)
 	print medidasStanford
 	medidasBikel = obtenerMedidas(arbol2, arbolRef)
 	print medidasBikel
+	generarArbol(arbol, "stanford")
+	generarArbol(arbol2, "bikel")
