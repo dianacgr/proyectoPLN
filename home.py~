@@ -58,7 +58,7 @@ if __name__ == "__main__":
 	print arbol2
 	arbolRef = "(S (NP-SBJ (DT The) (NN thrift) (VBG holding) (NN company) ) (VP (VBD said) (SBAR (-NONE- 0) (S (NP-SBJ-1 (PRP it) ) (VP (VBZ expects) (S (NP-SBJ (-NONE- *-1) ) (VP (TO to) (VP (VP (VB obtain) (NP (JJ regulatory) (NN approval) )) (CC and) (VP (VB complete) (NP (DT the) (NN transaction) ))(PP-TMP (IN by) (NP (NN year-end) ))))))))) (. .) )"
 	print arbol
-	medidasStanford = obtenerMedidas(arbol, arbolRef)
+	medidasStanford = obtenerMedidas(arbolRef, arbol)
 	print medidasStanford
-	medidasBikel = obtenerMedidas(arbol2, arbolRef)
+	medidasBikel = obtenerMedidas(arbolRef, arbol2)
 	print medidasBikel
