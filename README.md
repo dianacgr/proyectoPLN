@@ -8,6 +8,10 @@ Dependencias
 - Django 1.10.4
 - django-bootstrap3
 
+Plantilla utilizada
+===================
+https://startbootstrap.com/template-overviews/sb-admin-2/
+
 Instrucciones:
 ===============
 
